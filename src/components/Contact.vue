@@ -9,7 +9,7 @@ const isLoading = ref(false);
 
 // 🔑 REPLACE THESE WITH YOUR ACTUAL KEYS
 const WEB3FORMS_ACCESS_KEY = "ba31a1c7-d53e-44b6-8b52-fbc2084d2ff4";
-const SITE_KEY = "YOUR_RECAPTCHA_SITE_KEY_HERE";
+const SITE_KEY = "6Le3aActAAAAAJGhc_7YDwrN1SsfM12kvIwEFxj4";
 
 const subject = "New message from Portfolio Contact Form";
 
