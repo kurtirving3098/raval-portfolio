@@ -1,178 +1,168 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
-	import {Notyf} from 'notyf';
+// Form Data binding
+const name = ref("");
+const email = ref("");
+const message = ref("");
+const isLoading = ref(false);
 
-	import {ref, onMounted, onBeforeUnmount} from 'vue';
+// 🔑 REPLACE THESE WITH YOUR ACTUAL KEYS
+const WEB3FORMS_ACCESS_KEY = "e24f9995-dea1-4f09-a131-7f3edd8e02c7";
+const SITE_KEY = "6Le3aActAAAAAJGhc_7YDwrN1SsfM12kvIwEFxj4";
 
-	const notyf = new Notyf();
+const subject = "New message from Portfolio Contact Form";
 
-	const name = ref("");
-	const email = ref("");
-	const message = ref("");
+// reCAPTCHA State
+const recaptchaContainer = ref(null);
+const recaptchaWidgetId = ref(null);
+const recaptchaToken = ref('');
 
-	const isLoading = ref(false);
+function onRecaptchaSuccess(token) {
+    recaptchaToken.value = token;
+}
 
-	const WEB3FORMS_ACCESS_KEY = "e24f9995-dea1-4f09-a131-7f3edd8e02c7";
+function onRecaptchaExpired() {
+    recaptchaToken.value = '';
+}
 
-	const subject = "New message from Portfolio Contact Form";
-
-	const submitForm = async () => {
-		// Ensure the user completes the reCAPTCHA challenge before submitting the form.
-        // Check if a reCAPTCHA token exists
-        // recaptchaToken.value - stores the verification token returned by Google reCAPTCHA
-		if(!recaptchaToken.value) {
-			notyf.error('Please verify that you are not a robot');
-			// Stop the form submission process
-			return;	
-		}
-
-		// While the email is being sent, disable the button and change it text to "Sending..."
-		isLoading.value = true;
-
-		try {
-			const response = await fetch("https://api.web3forms.com/submit", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					// Indicates that the request accepts a JSON response
-					Accept: "application/json"
-				},
-				body: JSON.stringify({
-					access_key: WEB3FORMS_ACCESS_KEY,
-					subject: subject,
-					name: name.value,
-					email: email.value,
-					message: message.value
-				})
-			})
-
-			// Convert the API response into a JS Object
-			const result = await response.json();
-
-				// Check if the form submission was successful.
-				if (result.success) {
-					console.log(result);
-					isLoading.value = false;
-					notyf.success("Message Sent!");
-				}
-		} catch (error) {
-			console.log(result);
-			isLoading.value = false;
-			notyf.success("Failed to send message");
-		} finally {
-			resetRecaptcha();
-		}
-	}
-
-	/*reCAPTCHA Integration*/
-
-    const SITE_KEY = '6LfESQctAAAAAF1MlcecwEj-kVS6gvucL3ulNoHM';  // Replace with your site key
-    // The location where the reCAPTCHA checkbox will appear
-    const recaptchaContainer = ref(null);
-    // The ID of the reCAPTCHA widget after it is created
-    const recaptchaWidgetId = ref(null);
-    // Stores the token generated when the user completes reCAPTCHA
-    const recaptchaToken = ref('');
-
-    // Runs when the user successfully completes the reCAPTCHA challenge
-    function onRecaptchaSuccess(token) {
-          recaptchaToken.value = token;
+function renderRecaptcha() {
+    if (!window.grecaptcha) {
+        console.error('reCAPTCHA script has not loaded yet.');
+        return;
     }
 
-    // Runs when the reCAPTCHA verification expires
-    // Token typically expires after about 2 minutes (120 seconds) if the form has not been submitted
-    function onRecaptchaExpired() {
-          recaptchaToken.value = '';
-    }
-
-    // Creates and displays the reCAPTCHA widget
-    function renderRecaptcha() {
-    	// Check if the Google reCAPTCHA script is available
-        // window - refers to the browser window object
-        if (!window.grecaptcha) {
-            console.error('reCAPTCHA not loaded');
-            return;
-    }
-
-    // Creates the reCAPTCHA widget and save its ID
     recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
         sitekey: SITE_KEY,
         size: 'normal',
         callback: onRecaptchaSuccess,
         'expired-callback': onRecaptchaExpired,
+    });
+}
+
+function resetRecaptcha() {
+    if (recaptchaWidgetId.value !== null) {
+        window.grecaptcha.reset(recaptchaWidgetId.value);
+        recaptchaToken.value = ''; 
+    }
+}
+
+// 🚀 Integrated Form Submission Logic
+const submitForm = async () => {
+    if (!recaptchaToken.value) {
+        alert('Please complete the reCAPTCHA verification.');
+        return; 
+    }
+
+    isLoading.value = true;
+
+    try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify({
+                access_key: WEB3FORMS_ACCESS_KEY,
+                subject: subject,
+                name: name.value,
+                email: email.value,
+                message: message.value,
+            })
         });
-    }
 
-    function resetRecaptcha() {
-        if (recaptchaWidgetId.value !== null) {
-          	window.grecaptcha.reset(recaptchaWidgetId.value);
-            	recaptchaToken.value = '';
-        }
-    }
+        const result = await response.json();
 
-    onMounted(() => {
-    	// Check if the Google reCAPTCHA library has finished loading, since it is loaded asynchronously from index.html.
-        // This makes sure that the reCAPTCHA widget is rendered only after the library is available.
-        // setInterval() is a JavaScript function that repeatedly executes a block of code at a specified time interval.
-    const interval = setInterval(() => {
+        if (result.success) {
+            alert("Message Sent successfully!");
+            // Clear fields on success
+            name.value = "";
+            email.value = "";
+            message.value = "";
+        } 
+        
+    } catch (error) { 
+        console.error("Form submission error:", error);
+        alert("An error occurred. Please try again.");
+    } finally {
+        isLoading.value = false;
+        resetRecaptcha(); 
+    }
+};
+
+// Polling for global script availability
+let scriptCheckInterval = null;
+
+onMounted(() => {
+    scriptCheckInterval = setInterval(() => {
         if (window.grecaptcha && window.grecaptcha.render) {
-                renderRecaptcha();
-                // Stop checking once the widget has been rendered
-                clearInterval(interval);
+            renderRecaptcha();
+            clearInterval(scriptCheckInterval);
         }
-        // Check every 100 milliseconds if the Google reCAPTCHA library has loaded
     }, 100);
+});
 
-    
-    onBeforeUnmount(() => {
-    	// Stop checking once the widget has been rendered
-            clearInterval(interval);
-        });
-    });  
+onBeforeUnmount(() => {
+    if (scriptCheckInterval) clearInterval(scriptCheckInterval);
+});
 </script>
 
 <template>
-	<!-- Start of Contact -->
-	<h1 class="text-center my-4 pt-5" id="contact">Contact</h1>
-	<div class="contact-section">
-	    <div class="row align-items-center mt-4">
-	        <div class="col-md-6 map-container">
-	            <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=centro%20escolar%20university%20manila&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-	        </div>
-	        <div class="col-md-6">
-	        	<!-- Bind the submitForm() function to the form submit event -->
-	            <form @submit.prevent="submitForm">
-	                <div class="mb-3">
-	                	<!-- Bind the input field to the reactive variables using v-model -->
-	                    <input type="text" v-model="name" class="form-control contact-form-control" placeholder="First Name M.I. Last Name">
-	                </div>
-	                <div class="mb-3">
-	                    <input type="email" v-model="email" class="form-control contact-form-control" placeholder="Email">
-	                </div>
-	                <div class="mb-3">
-	                    <textarea class="form-control contact-form-control" v-model="message" rows="6" placeholder="Message"></textarea>
-	                </div>
-	                <div class="form-footer">
-	                    <div class="social-icons">
-	                        <a href="https://www.linkedin.com/in/charles-babbage-8291a6211/" id="linkedin"><i class="fab fa-linkedin"></i></a>
-	                        <a href="https://gitlab.com/cbabbage0991" id="gitlab"><i class="fab fa-gitlab"></i></a>
-	                        <a href="https://github.com/cbabbage0991" id="github"><i class="fab fa-github"></i></a>
-	                    </div>
-	                    <button type="submit" class="submit-btn pl-5 pr-5" :disabled="isLoading">{{isLoading ? "Sending..." : "Submit"}}</button>
-	                </div>
-	                <!-- The location where the reCAPTCHA checkbox will appear -->
-	                <div class="d-flex justify-content-end mt-2">
-	                	<!-- Creates a reference to the div so the reCAPTCHA widget can be rendered into it. -->
-	                	<div ref="recaptchaContainer"></div>
-	                </div>
-	            </form>
-	            
-	        </div>
+	<div id="contact" class="container-fluid section-pad">
+	  <h2 class="section-title text-center">Contact</h2>
+	  <p class="section-subtitle text-center">Have any questions? Don't hesitate to reach out!</p>
+	  <div class="row justify-content-center mt-4">
+	    <div class="col-md-6">
+	    	<form id="contact-form" @submit.prevent="submitForm">
+	      		<input 
+                    type="text" 
+                    v-model="name" 
+                    class="form-control mb-3" 
+                    placeholder="First Name MI. Last Name" 
+                    required
+                >
+	      		<input 
+                    type="email" 
+                    v-model="email" 
+                    class="form-control mb-3" 
+                    placeholder="Email" 
+                    required
+                >
+	      		<textarea 
+                    class="form-control mb-3" 
+                    v-model="message" 
+                    rows="5" 
+                    placeholder="Message" 
+                    required
+                ></textarea>
+
+                <div class="d-flex justify-content-center mb-3">
+                    <div ref="recaptchaContainer"></div>
+                </div>
+
+	      		<div class="d-flex justify-content-between align-items-center">
+	        		<div>
+                        <a href="https://www.linkedin.com" target="_blank">
+                            <i class="devicon-linkedin-plain colored contact-icon"></i>
+                        </a>
+                        <a href="https://www.gitlab.com" target="_blank">
+                            <i class="devicon-gitlab-plain colored contact-icon"></i>
+                        </a>
+                        <a href="https://www.github.com" target="_blank">
+                            <i class="devicon-github-original contact-icon"></i>
+                        </a>
+	        		</div>
+	        		<button class="btn btn-submit" type="submit" :disabled="isLoading">
+                        {{ isLoading ? 'Sending...' : 'Submit' }}
+                    </button>
+	      		</div>
+	      </form>
 	    </div>
+	  </div>
 	</div>
-	<!-- End of Contact -->
-</template>
+	</template>
 
 <style scoped>
-	
+/* Your existing styles */
 </style>

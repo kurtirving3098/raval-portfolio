@@ -1,5 +1,5 @@
 {
-  "name": "discussion",
+  "name": "csp1-vue",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,8 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "bootstrap": "4.6",
-    "notyf": "^3.10.0",
+    "bootstrap": "^5.3.8",
     "vue": "^3.5.32"
   },
   "devDependencies": {
