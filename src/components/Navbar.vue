@@ -1,28 +1,35 @@
 <script setup>
-
+	
 </script>
 
 <template>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
-    <div class="container-fluid px-4">
-      <a class="navbar-brand" href="#landing">Maiki</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="#landing">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#projects">My Projects</a></li>
-          <li class="nav-item"><a class="nav-link" href="#tools">Tools</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!-- End of Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="menu">
+        <a href="#landing" class="navbar-brand d-lg-none">Charles</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#portfolio-nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="portfolio-nav">
+            <ul class="navbar-nav ml-auto text-center text-md-left">
+                <li class="nav-item">
+                    <a href="#landing" class="nav-link" id="hm">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#projects" class="nav-link" id="prjcts">My Projects</a>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav pl-0 mr-auto text-center text-md-left">
+                <li class="nav-item">
+                    <a href="#tools" class="nav-link" id="tls">Tools</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link" id="cntct">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </template>
 
 <style scoped>
-
+	
 </style>

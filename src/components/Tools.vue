@@ -3,71 +3,65 @@
 </script>
 
 <template>
-	<!-- Tools Section -->
-	<div id="tools" class="container-fluid section-pad tools-bg">
-	  <h2 class="section-title text-center">Tools</h2>
-	  <p class="section-subtitle text-center">Technologies I work with</p>
-	  <div class="row text-center mt-4 justify-content-center">
+	<!-- Start of Tools -->
+            <div class="row flex-column bg-white jumbotron" id="tools">
+                <h1 class="my-1 text-center" >Tools</h1>
+                <div class="row justify-content-center py-3 tools-img">
+                    <div class="col-md-3 col-lg-2 mx-4 my-3">
+                        <h3 class="my-3 text-center">Front End</h3>
+                        <div class="row justify-content-center tools-img gx-5">
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/html.svg" class="img-fluid">
+                            </div>
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/css.svg" class="img-fluid">
+                            </div>
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/bootstrap.svg" class="img-fluid">
+                            </div>
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/js.svg" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-2 mx-4 my-3">
+                        <h3 class="my-3 text-center">MERN</h3>
+                        <div class="row tools-img gx-5">
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/mongodb.svg" class="img-fluid">
+                            </div>
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/expressjs.svg" class="img-fluid">
+                            </div>
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/react.svg" class="img-fluid">
+                            </div>
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/nodejs.svg" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-2 mx-4 my-3">
+                        <h3 class="my-3 text-center">Other Tools</h3>
+                        <div class="row tools-img gx-5">
 
-	    <div class="col-md-4 mb-4">
-	      <div class="tools-group">
-	        <h5 class="tools-heading">Front End</h5>
-	        <div class="mt-3">
-	          <i class="devicon-html5-plain colored tool-icon" title="HTML5"></i>
-	          <i class="devicon-css3-plain colored tool-icon" title="CSS3"></i>
-	          <i class="devicon-bootstrap-plain colored tool-icon" title="Bootstrap"></i>
-	          <i class="devicon-javascript-plain colored tool-icon" title="JavaScript"></i>
-	        </div>
-
-	        <div class="tools-labels mt-2">
-	          <span>HTML5</span>
-	          <span>CSS3</span>
-	          <span>Bootstrap</span>
-	          <span>JavaScript</span>
-	        </div>
-	      </div>
-	    </div>
-
-	    <div class="col-md-4 mb-4">
-	      <div class="tools-group">
-	        <h5 class="tools-heading">MERN</h5>
-	        <div class="mt-3">
-	          <i class="devicon-mongodb-plain colored tool-icon" title="MongoDB"></i>
-	          <i class="devicon-express-original colored tool-icon" title="Express.js"></i>
-	          <i class="devicon-react-original colored tool-icon" title="React.js"></i>
-	          <i class="devicon-nodejs-plain colored tool-icon" title="Node.js"></i>
-	        </div>
-	        
-	        <div class="tools-labels mt-2">
-	          <span>MongoDB</span>
-	          <span>Express.js</span>
-	          <span>React.js</span>
-	          <span>Node.js</span>
-	        </div>
-	      </div>
-	    </div>
-
-	    <div class="col-md-4 mb-4">
-	      <div class="tools-group">
-	        <h5 class="tools-heading">Other Tools</h5>
-	        <div class="mt-3">
-	          <i class="devicon-heroku-plain colored tool-icon" title="Heroku"></i>
-	          <i class="devicon-git-plain colored tool-icon" title="Git"></i>
-	          <i class="devicon-postman-plain colored tool-icon" title="Postman"></i>
-	          <i class="devicon-vscode-plain colored tool-icon" title="VS Code"></i>
-	        </div>
-	        <div class="tools-labels mt-2">
-	          <span>Heroku</span>
-	          <span>Git</span>
-	          <span>Postman</span>
-	          <span>VS Code</span>
-	        </div>
-	      </div>
-	    </div>
-
-	  </div>
-	</div>
-	<!-- End of Tools Section -->
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/heroku.svg" class="img-fluid">
+                            </div>
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/git.svg" class="img-fluid">
+                            </div>
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/postman.svg" class="img-fluid">
+                            </div>
+                            <div class="col-6 tools-img">
+                                <img src="/images/tools/sublime.svg" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Tools -->
 </template>
 
 <style scoped>
